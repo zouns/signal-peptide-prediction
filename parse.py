@@ -1,8 +1,7 @@
 from Bio import SeqIO
 from os import listdir
 from random import randint
-
-print("test3")
+import numpy as np
 
 #According to the chosen mode, access the desired folder and call the files reading functions
 #In the end, returns a list of dictionaries
@@ -23,15 +22,15 @@ def accessFolders(mode, trainingProportion):
     return data
 
 #Access all the files in the specific folder
-def accessFiles(classificationStatus,trainingProportion,folder):
+def accessFiles(label,trainingProportion,folder):
     data = []
     for f in listdir(folder):
-        data += readFile(classificationStatus,trainingProportion,folder + f)
+        data += readFile(label,trainingProportion,folder + f)
     return data
 
 #Read all the sequences from a specific file
 #A number of sequences is chosen randomly in the file to become training examples, according to wanted proportion
-def readFile(classificationStatus,trainingProportion,f):
+def readFile(label,trainingProportion,f):
     data = []
     nElements = 0
     with open(f, 'r') as fhandle:
@@ -39,7 +38,7 @@ def readFile(classificationStatus,trainingProportion,f):
             nElements += 1
             data.append({'sequence' : str(record.seq.split('#')[0]),
                          'annotationLine' : str(record.seq.split('#')[1]),
-                         'classificationStatus' : classificationStatus,
+                         'label' : label,
                          'isTraining' : 'y'})
             fhandle.closed
         for n in pickRandomElements(nElements,trainingProportion):
@@ -55,6 +54,7 @@ def pickRandomElements(nElements, proportion):
         del l[randint(0,len(l) - 1)]
         numberPicked += 1
     return l
+
 
 # if len(sys.argv) <= 1 or sys.argv[1] not in ["tm","nontm","all"]:
 #     sys.stderr.write("You need to choose a correct mode :\ntm\nnontm\nall\n")

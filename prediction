@@ -4,8 +4,24 @@ import parse
 import modeltraining
 import sys
 
+def get_features(sample):
+	features = []
+	features += sample['sequence'][0:sample['annotationLine'].index('C')].count("A")
+	return features
 
-
+def build_sets(data):
+	X_train = []
+	y_train = []
+	X_test = []
+	y_test = []
+	for sample in data:
+		if sample['isTraining'] == 'y':
+			X_train += [get_features(sample)]
+			y_train += sample['label']
+		else :
+			X_test += [get_features(sample)]
+			y_test += sample['label']
+	return X_train, y_train, X_test, y_test
 
 if __name__ == '__main__':
 
@@ -27,3 +43,10 @@ if __name__ == '__main__':
 	    data = parse.accessFolders(mode, trainingProportion)
 	    print data[0]
 	    print len(data)
+
+	    X_train, y_train, X_test, y_test = build_sets(data)
+
+	    model = modeltraining.best_model(X_train, y_train)
+	    print model.best_params_
+	    y_true, y_pred = y_test, model.predict(X_test)
+    	print classification_report(y_true, y_pred)

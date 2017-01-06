@@ -16,7 +16,7 @@ param_grid = {
 }
 
 # run grid search
-def run_grid_search(X, y, clf=clf, param_grid=param_grid):
+def best_model(X, y, clf=clf, param_grid=param_grid):
 	grid_search = GridSearchCV(clf, param_grid=param_grid)
 	start = time()
 	model = grid_search.fit(X, y)
