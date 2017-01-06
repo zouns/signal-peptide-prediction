@@ -54,20 +54,20 @@ def pickRandomElements(nElements, proportion):
         numberPicked += 1
     return l
 
-if len(sys.argv) <= 1 or sys.argv[1] not in ["tm","nontm","all"]:
-    sys.stderr.write("You need to choose a correct mode :\ntm\nnontm\nall\n")
-    sys.exit("Script exited with error")
-else:
-    mode = sys.argv[1]
-    if len(sys.argv) == 2:
-        print ("Default training proportion chosen : 0.7")
-        trainingProportion = 0.7
-    else:    
-        trainingProportion = float(sys.argv[2])
-        if not (trainingProportion <= 1.0 and trainingProportion >= 0):
-            sys.stderr.write("The proportion should be between 0 and 1\n")
-            sys.exit("Script exited with error")
+# if len(sys.argv) <= 1 or sys.argv[1] not in ["tm","nontm","all"]:
+#     sys.stderr.write("You need to choose a correct mode :\ntm\nnontm\nall\n")
+#     sys.exit("Script exited with error")
+# else:
+#     mode = sys.argv[1]
+#     if len(sys.argv) == 2:
+#         print ("Default training proportion chosen : 0.7")
+#         trainingProportion = 0.7
+#     else:    
+#         trainingProportion = float(sys.argv[2])
+#         if not (trainingProportion <= 1.0 and trainingProportion >= 0):
+#             sys.stderr.write("The proportion should be between 0 and 1\n")
+#             sys.exit("Script exited with error")
 
-    data = accessFolders(mode, trainingProportion)
-    #print data
-    print len(data)
+#     data = accessFolders(mode, trainingProportion)
+#     #print data
+#     print len(data)
