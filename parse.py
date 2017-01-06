@@ -37,8 +37,8 @@ def readFile(classificationStatus,trainingProportion,f):
     with open(f, 'r') as fhandle:
         for record in SeqIO.parse(fhandle, "fasta"):
             nElements += 1
-            data.append({'sequence' : record.seq.split('#')[0],
-                         'annotationLine' : record.seq.split('#')[1],
+            data.append({'sequence' : str(record.seq.split('#')[0]),
+                         'annotationLine' : str(record.seq.split('#')[1]),
                          'classificationStatus' : classificationStatus,
                          'isTraining' : 'y'})
             fhandle.closed
@@ -70,6 +70,6 @@ def pickRandomElements(nElements, proportion):
 #             sys.stderr.write("The proportion should be between 0 and 1\n")
 #             sys.exit("Script exited with error")
 
-#     data = accessFolders(mode, trainingProportion)
-#     #print data
-#     print len(data)
+#data = accessFolders('all', 0.7)
+#print data
+#print len(data)
