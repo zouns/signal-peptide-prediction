@@ -40,7 +40,6 @@ def readFile(label,trainingProportion,f):
                          'annotationLine' : str(record.seq.split('#')[1]),
                          'label' : label,
                          'isTraining' : 'y'})
-            fhandle.closed
         for n in pickRandomElements(nElements,trainingProportion):
             data[n]['isTraining'] = 'n'
     return data
