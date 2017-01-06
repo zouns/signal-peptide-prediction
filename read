@@ -65,11 +65,11 @@ else:
         print ("Default training proportion chosen : 0.7")
         trainingProportion = 0.7
     else:    
-        trainingProportion = sys.argv[2]
-        if not (float(trainingProportion) <= 1.0 and float(trainingProportion) >= 0):
+        trainingProportion = float(sys.argv[2])
+        if not (trainingProportion <= 1.0 and trainingProportion >= 0):
             sys.stderr.write("The proportion should be between 0 and 1\n")
             sys.exit("Script exited with error")
 
-    data = accessFolders(mode,float(trainingProportion))
+    data = accessFolders(mode, trainingProportion)
     #print data
     print len(data)
