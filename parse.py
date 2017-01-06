@@ -2,7 +2,7 @@ from Bio import SeqIO
 from os import listdir
 from random import randint
 
-print("test2")
+print("test3")
 
 #According to the chosen mode, access the desired folder and call the files reading functions
 #In the end, returns a list of dictionaries
