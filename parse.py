@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-import sys
 from Bio import SeqIO
 from os import listdir
 from random import randint
