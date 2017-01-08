@@ -32,6 +32,20 @@ def build_sets(data, nToCount):
 			y_test += [sample['label']]
 	return np.array(X_train), np.array(y_train), np.array(X_test), np.array(y_test)
 
+def testDifferentLength(startLength,endLength,step,data):
+        i = startLength
+        l = []
+        r = []
+        while i <= endLength:
+                X_train, y_train, X_test, y_test = build_sets(data,i)
+                model = modeltraining.best_model(X_train, y_train)
+                r = [i,model.score(X_test,y_test)]
+                print r
+                l += [r]
+                i += step
+        return l
+                
+
 if __name__ == '__main__':
         
 	if len(sys.argv) <= 1 or sys.argv[1] not in ["tm","nontm","all"]:
@@ -50,18 +64,7 @@ if __name__ == '__main__':
 	            sys.exit("Script exited with error")
 
 	    data = parse.accessFolders(mode, trainingProportion)
-            i = 1
-            l = []
-            r = []
-            while i <= 60:
-	        model = modeltraining.best_model(X_train, y_train)
-                X_train, y_train, X_test, y_test = build_sets(data,i)
-                r = [i,model.score(X_test,y_test)]
-                print r
-                l += [r]
-                i += 2
-            print l
-        
+            print(testDifferentLength(18,22,1,data))
             #print model.best_params_
 	    # y_true, y_pred = y_test, model.predict(X_test)
     	# print classification_report(y_true, y_pred)
