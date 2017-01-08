@@ -5,7 +5,7 @@ import modeltraining
 import sys
 import numpy as np
 from sklearn.metrics import classification_report
-
+from Bio import SeqIO
 
 
 def countAA(listAA,seq,nToCount):
@@ -14,9 +14,9 @@ def countAA(listAA,seq,nToCount):
                 features += [seq[0:nToCount].count(AA)]
         return features
 
-def get_features(sample,nToCount):
+def get_features(sequence,nToCount):
         listAA = ['A','R', 'N', 'D', 'C', 'E', 'Q', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S','T','W', 'Y', 'V']
-        return countAA(listAA,sample['sequence'],nToCount)
+        return countAA(listAA,sequence,nToCount)
 
 def build_sets(data, nToCount):
 	X_train = []
@@ -25,10 +25,10 @@ def build_sets(data, nToCount):
 	y_test = []
 	for sample in data:
 		if sample['isTraining'] == 'y':
-			X_train += [get_features(sample,nToCount)]
+			X_train += [get_features(sample['sequence'],nToCount)]
 			y_train += [sample['label']]
 		else :
-			X_test += [get_features(sample,nToCount)]
+			X_test += [get_features(sample['sequence'],nToCount)]
 			y_test += [sample['label']]
 	return np.array(X_train), np.array(y_train), np.array(X_test), np.array(y_test)
 
@@ -70,6 +70,33 @@ if __name__ == '__main__':
         print model.score(X_test,y_test)
                               
 
+
+            #print(testDifferentLength(18,22,1,data))
+            X_train, y_train, X_test, y_test = build_sets(data,19)
+            model = modeltraining.best_model(X_train, y_train)
+            pC = 0
+            nC = 0
+            print model.score(X_test,y_test)
+            with open('data/proteomes/Saccharomyces_cerevisiae.R64-1-1.pep.all.fa', 'r') as fhandle:
+                l = []
+                for record in SeqIO.parse(fhandle,"fasta"):
+                        l += [get_features(str(record.seq),19)]
+                predict = model.predict(l)
+                nP = 0
+                nN = 0
+                err = 0
+                for e in predict:
+                        if (e == 'p'):
+                                nP += 1
+                        elif  (e == 'n'):
+                                nN += 1
+                        else:
+                                err += 1
+                print("Number of positive : " + str(nP))
+                print("Number of negative : " + str(nN))
+                print("Errors : " + str(err))
+                
+                
             #print model.best_params_
 	    # y_true, y_pred = y_test, model.predict(X_test)
     	# print classification_report(y_true, y_pred)
