@@ -8,8 +8,13 @@ clf = RandomForestClassifier(n_estimators=10)
 # use a full grid over all parameters
 param_grid = {
 	"max_depth": [3,4,5,6, None],
-	"max_features": [1, 3, 5, 8, 10, 15, 19],
-	"min_samples_split": [2, 5, 10],
+
+	# "max_features": [1, 3, 5, 8, 10, 15, 19],
+	# "min_samples_split": [2, 5, 10],
+
+	"max_features": [1,2,3,4,5],
+	"min_samples_split": [2,5,10],
+
 	"min_samples_leaf": [1, 3, 10],
 	"bootstrap": [True, False],
 	"criterion": ["gini", "entropy"]

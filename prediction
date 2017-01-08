@@ -50,6 +50,8 @@ def testProteome(model,proteome):
         f = ""
         if proteome == 'sacc':
                 f = 'data/proteomes/Saccharomyces_cerevisiae.R64-1-1.pep.all.fa'
+        elif proteome == 'homo':
+                f = 'data/proteomes/Homo_sapiens.GRCh38.pep.all.fa'
         else:
                 print "Incorrect proteome chosen. Default proteome loaded : saccharomyces"
                 f = 'data/proteomes/Saccharomyces_cerevisiae.R64-1-1.pep.all.fa'
@@ -92,12 +94,13 @@ if __name__ == '__main__':
 	            sys.exit("Script exited with error")
 
 	    data = parse.accessFolders(mode, trainingProportion)                  
-            #print(testDifferentLength(18,22,1,data))
-            X_train, y_train, X_test, y_test = build_sets(data,19)
-            model = modeltraining.best_model(X_train, y_train)
-            print model.score(X_test,y_test)
-            testProteome(model,'sacc')
-                
+        #print(testDifferentLength(1,60,2,data))
+        X_train, y_train, X_test, y_test = build_sets(data,19)
+        model = modeltraining.best_model(X_train, y_train)
+        print model.best_params_
+        print model.score(X_test,y_test)
+        testProteome(model,'homo')
+            
                 
             #print model.best_params_
 	    # y_true, y_pred = y_test, model.predict(X_test)
