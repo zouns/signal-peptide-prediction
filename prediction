@@ -46,6 +46,34 @@ def testDifferentLength(startLength,endLength,step,data):
         return l
                 
 
+def testProteome(model,proteome):
+        f = ""
+        if proteome == 'sacc':
+                f = 'data/proteomes/Saccharomyces_cerevisiae.R64-1-1.pep.all.fa'
+        else:
+                print "Incorrect proteome chosen. Default proteome loaded : saccharomyces"
+                f = 'data/proteomes/Saccharomyces_cerevisiae.R64-1-1.pep.all.fa'
+        l = []
+        with open(f, 'r') as fhandle:
+                for record in SeqIO.parse(fhandle,"fasta"):
+                        l += [get_features(str(record.seq),19)]
+        predict = model.predict(l)
+        nP = 0
+        nN = 0
+        err = 0
+        for e in predict:
+                if (e == 'p'):
+                        nP += 1
+                elif  (e == 'n'):
+                        nN += 1
+                else:
+                        err += 1
+        print("Number of positive : " + str(nP))
+        print("Number of negative : " + str(nN))
+        print("Errors : " + str(err))
+                                        
+                                        
+                
 if __name__ == '__main__':
         
 	if len(sys.argv) <= 1 or sys.argv[1] not in ["tm","nontm","all"]:
@@ -67,27 +95,8 @@ if __name__ == '__main__':
             #print(testDifferentLength(18,22,1,data))
             X_train, y_train, X_test, y_test = build_sets(data,19)
             model = modeltraining.best_model(X_train, y_train)
-            pC = 0
-            nC = 0
             print model.score(X_test,y_test)
-            with open('data/proteomes/Saccharomyces_cerevisiae.R64-1-1.pep.all.fa', 'r') as fhandle:
-                l = []
-                for record in SeqIO.parse(fhandle,"fasta"):
-                        l += [get_features(str(record.seq),19)]
-                predict = model.predict(l)
-                nP = 0
-                nN = 0
-                err = 0
-                for e in predict:
-                        if (e == 'p'):
-                                nP += 1
-                        elif  (e == 'n'):
-                                nN += 1
-                        else:
-                                err += 1
-                print("Number of positive : " + str(nP))
-                print("Number of negative : " + str(nN))
-                print("Errors : " + str(err))
+            testProteome(model,'sacc')
                 
             #print model.best_params_
 	    # y_true, y_pred = y_test, model.predict(X_test)
