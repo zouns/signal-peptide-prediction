@@ -6,30 +6,34 @@ import sys
 import numpy as np
 from sklearn.metrics import classification_report
 
-def get_features(sample):
-	features = []
-	if 'C' in sample['annotationLine']:
-		features += [sample['sequence'][0:sample['annotationLine'].index('C')].count("A")]
-	else:
-		features += [10000000]
-	return features
 
-def build_sets(data):
+
+def countAA(listAA,seq,nToCount):
+        features = []
+        for AA in listAA:
+                features += [seq[0:nToCount].count(AA)]
+        return features
+
+def get_features(sample,nToCount):
+        listAA = ['A','R', 'N', 'D', 'C', 'E', 'Q', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S','T','W', 'Y', 'V']
+        return countAA(listAA,sample['sequence'],nToCount)
+
+def build_sets(data, nToCount):
 	X_train = []
 	y_train = []
 	X_test = []
 	y_test = []
 	for sample in data:
 		if sample['isTraining'] == 'y':
-			X_train += [get_features(sample)]
+			X_train += [get_features(sample,nToCount)]
 			y_train += [sample['label']]
 		else :
-			X_test += [get_features(sample)]
+			X_test += [get_features(sample,nToCount)]
 			y_test += [sample['label']]
 	return np.array(X_train), np.array(y_train), np.array(X_test), np.array(y_test)
 
 if __name__ == '__main__':
-
+        
 	if len(sys.argv) <= 1 or sys.argv[1] not in ["tm","nontm","all"]:
 	    sys.stderr.write("You need to choose a correct mode :\ntm\nnontm\nall\n")
 	    sys.exit("Script exited with error")
@@ -46,12 +50,20 @@ if __name__ == '__main__':
 	            sys.exit("Script exited with error")
 
 	    data = parse.accessFolders(mode, trainingProportion)
-	    # print len(data)
-
-	    X_train, y_train, X_test, y_test = build_sets(data)
-
-	    model = modeltraining.best_model(X_train, y_train)
-	    print model.best_params_
+            i = 1
+            l = []
+            r = []
+            while i <= 60:
+	        model = modeltraining.best_model(X_train, y_train)
+                X_train, y_train, X_test, y_test = build_sets(data,i)
+                r = [i,model.score(X_test,y_test)]
+                print r
+                l += [r]
+                i += 2
+            print l
+        
+            #print model.best_params_
 	    # y_true, y_pred = y_test, model.predict(X_test)
     	# print classification_report(y_true, y_pred)
-    	print model.score(X_test,y_test)
+    	#print model.score(X_test,y_test)
+       
