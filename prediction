@@ -79,30 +79,30 @@ def testProteome(model,proteome):
 if __name__ == '__main__':
         
 	if len(sys.argv) <= 1 or sys.argv[1] not in ["tm","nontm","all"]:
-	    sys.stderr.write("You need to choose a correct mode :\ntm\nnontm\nall\n")
-	    sys.exit("Script exited with error")
+                sys.stderr.write("You need to choose a correct mode :\ntm\nnontm\nall\n")
+	        sys.exit("Script exited with error")
 	
 	else:
-	    mode = sys.argv[1]
-	    if len(sys.argv) == 2:
-	        print ("Default training proportion chosen : 0.7")
-	        trainingProportion = 0.7
-	    else:    
-	        trainingProportion = float(sys.argv[2])
-	        if not (trainingProportion <= 1.0 and trainingProportion >= 0):
-	            sys.stderr.write("The proportion should be between 0 and 1\n")
-	            sys.exit("Script exited with error")
+                mode = sys.argv[1]
+	        if len(sys.argv) == 2:
+	                print ("Default training proportion chosen : 0.7")
+	                trainingProportion = 0.7
+                else:    
+	                trainingProportion = float(sys.argv[2])
+	                if not (trainingProportion <= 1.0 and trainingProportion >= 0):
+	                        sys.stderr.write("The proportion should be between 0 and 1\n")
+	                        sys.exit("Script exited with error")
 
-	    data = parse.accessFolders(mode, trainingProportion)                  
-            #print(testDifferentLength(1,60,2,data))
-            X_train, y_train, X_test, y_test = build_sets(data,19)
-            model = modeltraining.best_model(X_train, y_train)
-            print model.best_params_
-            print model.score(X_test,y_test)
-            testProteome(model,'sacc')
+                data = parse.accessFolders(mode, trainingProportion)                  
+                #print(testDifferentLength(1,60,2,data))
+                X_train, y_train, X_test, y_test = build_sets(data,19)
+                model = modeltraining.best_model(X_train, y_train)
+                print model.best_params_
+                print model.score(X_test,y_test)
+                testProteome(model,'sacc')
                 
-            #print model.best_params_
-	    # y_true, y_pred = y_test, model.predict(X_test)
+                #print model.best_params_
+	        # y_true, y_pred = y_test, model.predict(X_test)
     	# print classification_report(y_true, y_pred)
     	#print model.score(X_test,y_test)
        
