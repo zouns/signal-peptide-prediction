@@ -15,7 +15,7 @@ def countAA(listAA,seq,nToCount):
         return features
 
 def get_features(sequence,nToCount):
-        listAA = ['A','R', 'N', 'D', 'C', 'E', 'Q', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S','T','W', 'Y', 'V']
+        listAA = ['A','L', 'V', 'K', 'R', 'N', 'D', 'C', 'E', 'Q', 'G', 'H', 'I', 'M', 'F', 'P', 'S','T','W', 'Y']
         return countAA(listAA,sequence,nToCount)
 
 def build_sets(data, nToCount):
@@ -99,7 +99,7 @@ if __name__ == '__main__':
             model = modeltraining.best_model(X_train, y_train)
             print model.best_params_
             print model.score(X_test,y_test)
-            testProteome(model,'homo')
+            testProteome(model,'sacc')
                 
                 
             #print model.best_params_
