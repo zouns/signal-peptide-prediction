@@ -4,19 +4,34 @@ import parse
 import modeltraining
 import sys
 import numpy as np
+import math
 from sklearn.metrics import classification_report
 from Bio import SeqIO
 
 
-def countAA(listAA,seq,nToCount):
-        features = []
-        for AA in listAA:
-                features += [seq[0:nToCount].count(AA)]
-        return features
+def expFactor(nToCount,i):
+    return math.exp(-1*float(i)/float(nToCount))
 
+def countAA(listAA,seq,nToCount):
+    features = []
+    for AA in listAA:
+        features += [seq[0:nToCount].count(AA)]
+    return features
+
+def countAAExp(listAA,seq,nToCount):
+    features = []
+    score = 0
+    for AA in listAA:
+        score = 0
+        for i in range(0,len(seq)):
+            if seq[i] == AA:
+                score += expFactor(nToCount,i)
+        features += [score]
+    return features
+    
 def get_features(sequence,nToCount):
         listAA = ['A','L', 'V', 'K', 'R', 'N', 'D', 'C', 'E', 'Q', 'G', 'H', 'I', 'M', 'F', 'P', 'S','T','W', 'Y']
-        return countAA(listAA,sequence,nToCount)
+        return countAAExp(listAA,sequence,nToCount)
 
 def build_sets(data, nToCount):
 	X_train = []
@@ -102,7 +117,7 @@ if __name__ == '__main__':
                 testProteome(model,'sacc')
                 
                 #print model.best_params_
-	        y_true, y_pred = y_test, model.predict(X_test)
-    	print classification_report(y_true, y_pred)
+	       # y_true, y_pred = y_test, model.predict(X_test)
+    	#print classification_report(y_true, y_pred)
     	#print model.score(X_test,y_test)
        
