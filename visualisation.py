@@ -38,14 +38,22 @@ def get_peptides(data):
 
 	colormap = plt.cm.Set1 #I suggest to use nipy_spectral, Set1,Paired
 	plt.gca().set_color_cycle([colormap(i) for i in np.linspace(0, 1,20)])
-	plt.hist(aa_dir.values(), bins=62, histtype='bar', stacked=True, label=aa_dir.keys())
+	plt.hist(aa_dir.values(), bins=500, histtype='bar', stacked=True, label=aa_dir.keys())
 	plt.legend()
+	plt.xlim([0,60])
 	plt.xlabel('position')
 	plt.ylabel('Nb of each AA at this position')
 	plt.show()
 
 
-# def aa_repartition(data):
+def result_plot(result):
+	plt.plot(result[:,0], result[:,1])
+	max_y = max(result[:,1])  # Find the maximum y value
+	max_x = result[:,0][result[:,1].argmax()]
+	plt.xlabel('Nb of Amino Acid considered')
+	plt.ylabel('Score')
+	plt.text(max_x, max_y, '%i , %.2f'%(max_x,max_y))
+	plt.show()
 
 
 if __name__ == '__main__':
@@ -69,11 +77,17 @@ if __name__ == '__main__':
 
 	    trainingdata = []
 	    peptide_trainingdata = []
+	    nonpeptide_trainingdata = []
 	    for sample in data:
 	    	if sample['isTraining']=='y':
 	    		trainingdata += [sample]
 	    		if sample['label']=='p':
-	    			peptide_trainingdata += [sample]	
+	    			peptide_trainingdata += [sample]
+	    		else:
+	    			nonpeptide_trainingdata += [sample]
 
 	    # cleavage_position_hist(peptide_visudata)
-	    get_peptides(peptide_trainingdata)
+	    # get_peptides(peptide_trainingdata)
+	    # get_peptides(nonpeptide_trainingdata)
+	    all_result = np.array([[1, 0.68205128205128207], [3, 0.7384615384615385], [5, 0.71794871794871795], [7, 0.74102564102564106], [9, 0.80769230769230771], [11, 0.84358974358974359], [13, 0.84743589743589742], [15, 0.84358974358974359], [17, 0.88846153846153841], [19, 0.88461538461538458], [21, 0.86923076923076925], [23, 0.88205128205128203], [25, 0.85897435897435892], [27, 0.86410256410256414], [29, 0.84743589743589742], [31, 0.84999999999999998], [33, 0.82692307692307687], [35, 0.8371794871794872], [37, 0.77051282051282055], [39, 0.81282051282051282], [41, 0.80512820512820515], [43, 0.79358974358974355], [45, 0.78974358974358971], [47, 0.78205128205128205], [49, 0.7615384615384615], [51, 0.77051282051282055], [53, 0.77307692307692311], [55, 0.76282051282051277], [57, 0.75128205128205128], [59, 0.77820512820512822]])
+	    result_plot(all_result)
