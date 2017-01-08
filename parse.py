@@ -71,4 +71,12 @@ def pickRandomElements(nElements, proportion):
 
 #data = accessFolders('all', 0.7)
 #print data
-#print len(data)
+#pC = 0
+#nC = 0
+#for d in data:
+#    if d['label'] == 'p':
+#        pC += 1
+#    else:
+#        nC += 1
+#print("P : " + str(pC))
+#print("N : " + str(nC))

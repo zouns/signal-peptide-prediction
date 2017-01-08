@@ -64,7 +64,12 @@ if __name__ == '__main__':
 	            sys.exit("Script exited with error")
 
 	    data = parse.accessFolders(mode, trainingProportion)
-            print(testDifferentLength(18,22,1,data))
+            #print(testDifferentLength(18,22,1,data))
+            X_train, y_train, X_test, y_test = build_sets(data,19)
+            model = modeltraining.best_model(X_train, y_train)
+            print model.score(X_test,y_test)
+                              
+
             #print model.best_params_
 	    # y_true, y_pred = y_test, model.predict(X_test)
     	# print classification_report(y_true, y_pred)
