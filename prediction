@@ -101,7 +101,6 @@ if __name__ == '__main__':
             print model.score(X_test,y_test)
             testProteome(model,'sacc')
                 
-                
             #print model.best_params_
 	    # y_true, y_pred = y_test, model.predict(X_test)
     	# print classification_report(y_true, y_pred)

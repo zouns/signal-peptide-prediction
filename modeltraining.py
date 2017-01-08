@@ -10,6 +10,7 @@ param_grid = {
 	"max_depth": [3,4,5,6, None],
 	"max_features": [3,4,5],
 	"min_samples_split": [2,5,10],
+
 	"min_samples_leaf": [1, 3, 10],
 	"bootstrap": [True, False],
 	"criterion": ["gini", "entropy"]
